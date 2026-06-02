@@ -2,6 +2,7 @@ from pathlib import Path
 from datetime import timedelta
 from django.conf.global_settings import AUTH_USER_MODEL
 
+
 #Modulos y Aplicaciones
 from Apps.Catalogos.setting_apps import Catalogos_Setting_Apps
 from Apps.CRM.setting_apps import CRM_Setting_Apps
@@ -9,9 +10,12 @@ from Apps.Seguridad.setting_apps import Seguridad_Setting_Apps
 
 import os
 import dj_database_url
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 
 # Quick-start development settings - unsuitable for production
@@ -23,7 +27,7 @@ SECRET_KEY = 'django-insecure-0ya8npmrlbtuxzk1+_q%e)0#+l+q!*nak+=9s+euv&g*!*&8a5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -40,6 +44,7 @@ INSTALLED_APPS = [
 ] + Seguridad_Setting_Apps + Catalogos_Setting_Apps + CRM_Setting_Apps  
 
 MIDDLEWARE = [
+     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -73,12 +78,20 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASE_URL = os.environ.get('DATABASE_URL')
-
-if DATABASE_URL:
-    #Modo Nube: usar la base de datos Render
+if os.environ.get('DB_NAME_NEON'):
+    # Modo Nube: Se conecta a NEON usando variables específicas
     DATABASES = {
-        'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get('DB_NAME_NEON'),
+            'USER': os.environ.get('USER_NEON'),
+            'PASSWORD': os.environ.get('PASSWORD_NEON'),
+            'HOST': os.environ.get('HOST_NEON'),
+            'PORT': os.environ.get('PORT_NEON', '5432'),
+            'OPTIONS': {
+                'sslmode': 'require',
+            }
+        }
     }
 else:
     #Modo local: Se usa SQL Server
@@ -89,7 +102,6 @@ else:
             'USER': 'altech_admin',
             'PASSWORD': 'admin123',
             'HOST': 'localhost',  
-            'PORT': '',
             'OPTIONS': {
                 'driver': 'ODBC Driver 17 for SQL Server',  
                 'extra_params': 'TrustServerCertificate=yes', 
@@ -166,3 +178,12 @@ SWAGGER_SETTINGS = {
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:63342",
+    "http://127.0.0.1:63342",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "http://127.0.0.1:5500",
+    "http://localhost:5500",
+    ]

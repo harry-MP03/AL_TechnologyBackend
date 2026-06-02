@@ -22,6 +22,20 @@ class ClienteLead(models.Model):
     email = models.EmailField(unique=True, verbose_name='Correo Electrónico')
     telefono = models.CharField(max_length=20, blank=True, null=True, verbose_name='Teléfono')
 
+    # --- CAMPO DE MARKETING ---
+    ORIGEN_CHOICES = [
+        ('Google Search', 'Google Search / Buscador'),
+        ('Facebook Ads', 'Facebook Ads / Redes Sociales'),
+        ('LinkedIn', 'LinkedIn / Profesional'),
+        ('Directo', 'Tráfico Directo / Referencia'),
+    ]
+    origen_lead = models.CharField(
+        max_length=50,
+        choices=ORIGEN_CHOICES,
+        default='Directo',
+        verbose_name='Origen del Lead'
+    )
+
     RegistradoPor = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL, #Se vuelve vacio este campo si el usuario deja de existir

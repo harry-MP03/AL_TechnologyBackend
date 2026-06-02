@@ -4,8 +4,14 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from drf_yasg import openapi
+from django.views.generic import RedirectView #Como objetivo: rediccionar hacia al panel administrativo 
 
-
+# ---------------------------------------------------------
+# Personalización del panel administrativo de Django
+# ---------------------------------------------------------
+admin.site.site_header = "AL-Tecnology Administration"  # Título principal en la barra superior (reemplaza "Django administration")
+admin.site.site_title = "Portal de AL-Tecnology"        # Título en la pestaña del navegador
+admin.site.index_title = "Bienvenido al panel de control" # Subtítulo en la página principal del admin
 
 # Configuración del panel de Swagger
 schema_view = get_schema_view(
@@ -20,6 +26,8 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    # Redirección de la ruta raíz ('/') directamente al admin ('/admin/')
+    path('', RedirectView.as_view(url='/admin/', permanent=True)),
     path('admin/', admin.site.urls),
     
     # Rutas de Swagger
