@@ -1,16 +1,72 @@
 {% extends "admin/base.html" %}
+{% load i18n %}
 
+{# 1. Recuperamos el bloque del título de AL-Technology #}
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">{{ site_header|default:_('Django administration') }}</a>
+</h1>
+{% endblock %}
+
+{# 2. Aplicamos el diseño avanzado #}
 {% block extrastyle %}
 {{ block.super }}
 <style>
     :root {
-        /* Cambia la barra azul principal a amarillo */
-        --header-bg: #ebc700; /* Puedes usar el hex de tu preferencia */
-        
-        /* Cambia el texto del encabezado a un tono oscuro para que contraste con el amarillo */
-        --header-color: #222222;
-        --header-link-color: #111111;
-        --branding-color: #222222;
+        /* Un degradado dorado/amarillo con un toque glossy */
+        --header-bg: linear-gradient(180deg, #FFD700 0%, #D4AF37 100%);
+        --header-color: #1a1a1a;
+        --header-link-color: #1a1a1a;
+    }
+
+    /* --- BARRA SUPERIOR --- */
+    #header {
+        background: var(--header-bg);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); /* Sombra para dar profundidad */
+        border-bottom: 1px solid #b89600;
+    }
+
+    /* Efecto en el texto del título para que resalte sobre el fondo brillante */
+    #site-name h1, #site-name a {
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+    }
+
+    /* --- MÓDULOS Y TABLAS --- */
+    /* Bordes redondeados y sombras en las cajas de modelos */
+    .module {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+        border: 1px solid #333;
+    }
+
+    /* Cabeceras de las tablas (Barras amarillas de los módulos) con estilo cristalino/glossy */
+    .module h2, .module caption, .inline-group h2 {
+        background: linear-gradient(180deg, #FFE033 0%, #D4AF37 100%);
+        color: #1a1a1a;
+        font-weight: 700;
+        text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.4);
+        border-bottom: 1px solid #997a00;
+    }
+
+    /* --- BOTONES --- */
+    /* Botones redondeados con efecto hover luminoso */
+    .button, input[type=submit], input[type=button], .submit-row input, a.button {
+        background: linear-gradient(180deg, #FFD700 0%, #D4AF37 100%);
+        color: #1a1a1a;
+        border-radius: 20px; /* Bordes bien curvos */
+        border: 1px solid #b89600;
+        font-weight: bold;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .button:hover, input[type=submit]:hover, input[type=button]:hover {
+        background: linear-gradient(180deg, #FFF066 0%, #FFD700 100%);
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.6); /* Resplandor al pasar el ratón */
+        transform: translateY(-1px); /* Ligero salto al pasar el cursor */
+        color: #000;
     }
 </style>
 {% endblock %}
