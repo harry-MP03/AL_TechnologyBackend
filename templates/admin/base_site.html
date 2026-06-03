@@ -1,0 +1,16 @@
+{% extends "admin/base.html" %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+    :root {
+        /* Cambia la barra azul principal a amarillo */
+        --header-bg: #ebc700; /* Puedes usar el hex de tu preferencia */
+        
+        /* Cambia el texto del encabezado a un tono oscuro para que contraste con el amarillo */
+        --header-color: #222222;
+        --header-link-color: #111111;
+        --branding-color: #222222;
+    }
+</style>
+{% endblock %}
