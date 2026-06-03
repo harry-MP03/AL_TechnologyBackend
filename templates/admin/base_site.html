@@ -1,40 +1,41 @@
-{% extends "admin/base.html" %}
-{% load i18n %}
-
-{# 1. Recuperamos el bloque del título de AL-Technology #}
-{% block branding %}
-<h1 id="site-name">
-    <a href="{% url 'admin:index' %}">{{ site_header|default:_('Django administration') }}</a>
-</h1>
-{% endblock %}
-
-{# 2. Aplicamos el diseño avanzado #}
 {% block extrastyle %}
 {{ block.super }}
 <style>
     :root {
-        /* Un degradado dorado/amarillo con un toque glossy */
-        --header-bg: linear-gradient(180deg, #FFD700 0%, #D4AF37 100%);
-        --header-color: #1a1a1a;
-        --header-link-color: #1a1a1a;
+        /* Color base para tus módulos y botones */
+        --gold-gradient: linear-gradient(180deg, #FFD700 0%, #D4AF37 100%);
     }
 
     /* --- BARRA SUPERIOR --- */
     #header {
-        background: var(--header-bg);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); /* Sombra para dar profundidad */
-        border-bottom: 1px solid #b89600;
+        /* Fondo azul profesional (como en tu tercera captura) */
+        background: #417690; 
+        
+        /* Si prefieres que toda la barra sea amarilla de nuevo, borra la línea de arriba y descomenta la de abajo: */
+        /* background: var(--gold-gradient); */
+        
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        border-bottom: 2px solid #D4AF37; /* Una sutil línea dorada separadora */
     }
 
-    /* Efecto en el texto del título para que resalte sobre el fondo brillante */
+    /* Enlaces de la barra superior (Welcome, View Site, Log out) */
+    #header a:link, #header a:visited {
+        color: #FFD700 !important; /* Letras doradas */
+        /* Si usas la barra completamente amarilla, cambia este color a #111111 */
+    }
+
+    /* --- TÍTULO PRINCIPAL --- */
     #site-name h1, #site-name a {
-        font-weight: 800;
+        font-weight: 900 !important; /* Letra extra gruesa */
+        font-size: 26px; /* Un poco más grande para que destaque */
+        color: #FFD700 !important; /* Amarillo sólido para el título */
+        /* Si usas la barra amarilla, cambia el color de arriba a #000000 */
+        
         letter-spacing: 0.5px;
-        text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+        text-shadow: none !important; /* Quitamos sombras para máxima nitidez */
     }
 
     /* --- MÓDULOS Y TABLAS --- */
-    /* Bordes redondeados y sombras en las cajas de modelos */
     .module {
         border-radius: 10px;
         overflow: hidden;
@@ -42,21 +43,18 @@
         border: 1px solid #333;
     }
 
-    /* Cabeceras de las tablas (Barras amarillas de los módulos) con estilo cristalino/glossy */
     .module h2, .module caption, .inline-group h2 {
-        background: linear-gradient(180deg, #FFE033 0%, #D4AF37 100%);
-        color: #1a1a1a;
-        font-weight: 700;
-        text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.4);
+        background: var(--gold-gradient);
+        color: #1a1a1a !important; /* Forzamos texto oscuro sobre el oro */
+        font-weight: 800;
         border-bottom: 1px solid #997a00;
     }
 
     /* --- BOTONES --- */
-    /* Botones redondeados con efecto hover luminoso */
     .button, input[type=submit], input[type=button], .submit-row input, a.button {
-        background: linear-gradient(180deg, #FFD700 0%, #D4AF37 100%);
-        color: #1a1a1a;
-        border-radius: 20px; /* Bordes bien curvos */
+        background: var(--gold-gradient);
+        color: #1a1a1a !important;
+        border-radius: 20px;
         border: 1px solid #b89600;
         font-weight: bold;
         transition: all 0.2s ease-in-out;
@@ -64,9 +62,9 @@
 
     .button:hover, input[type=submit]:hover, input[type=button]:hover {
         background: linear-gradient(180deg, #FFF066 0%, #FFD700 100%);
-        box-shadow: 0 0 10px rgba(255, 215, 0, 0.6); /* Resplandor al pasar el ratón */
-        transform: translateY(-1px); /* Ligero salto al pasar el cursor */
-        color: #000;
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+        transform: translateY(-1px);
+        color: #000 !important;
     }
 </style>
 {% endblock %}
