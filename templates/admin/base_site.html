@@ -1,3 +1,14 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+{# 1. Recuperamos el bloque del título de AL-Technology #}
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">{{ site_header|default:_('Django administration') }}</a>
+</h1>
+{% endblock %}
+
+{# 2. Aplicamos el diseño avanzado #}
 {% block extrastyle %}
 {{ block.super }}
 <style>
