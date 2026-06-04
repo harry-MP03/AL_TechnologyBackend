@@ -178,12 +178,3 @@ SWAGGER_SETTINGS = {
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:63342",
-    "http://127.0.0.1:63342",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-    "http://127.0.0.1:5500",
-    "http://localhost:5500",
-    ]

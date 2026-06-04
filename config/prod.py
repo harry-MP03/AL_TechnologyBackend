@@ -24,5 +24,11 @@ DATABASES = {
             }
         }
 }
-# config/prod.py
-CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',')
+# Leemos la cadena de texto de Azure
+cors_origins_env = os.environ.get('CORS_ALLOWED_ORIGINS_STR', '')
+
+# Si la variable existe, la dividimos por comas; si no, dejamos una lista vacía
+if cors_origins_env:
+    CORS_ALLOWED_ORIGINS = [origin.strip() for origin in cors_origins_env.split(',')]
+else:
+    CORS_ALLOWED_ORIGINS = []
