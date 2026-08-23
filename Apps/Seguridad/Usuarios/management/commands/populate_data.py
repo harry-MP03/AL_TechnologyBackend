@@ -1,3 +1,4 @@
+from django.conf import settings
 import random
 from datetime import timedelta
 from django.core.management.base import BaseCommand
@@ -21,15 +22,19 @@ class Command(BaseCommand):
 
     @transaction.atomic
     def handle(self, *args, **options):
-        #self.stdout.write('Eliminando datos antiguos de CRM y Catálogos...')
+        
+        # --- APAGAR CORREOS TEMPORALMENTE ---
+        settings.EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+
+        self.stdout.write('Eliminando datos antiguos de CRM y Catálogos...')
         # El orden inverso es importante por las llaves foráneas
-        """DetalleCotizacion.objects.all().delete()
+        DetalleCotizacion.objects.all().delete()
         SolicitudCotizacion.objects.all().delete()
         ClienteLead.objects.all().delete()
         ServicioProducto.objects.all().delete()
         categoria_producto.objects.all().delete()
-        """
-        self.stdout.write('Conservando datos existentes y preparando la generación de 2000 registros nuevos...')
+        
+        self.stdout.write('Generando 10000 registros nuevos...')
         fake = Faker('es_ES')
 
         # --- 1. PREPARAR CATÁLOGOS BÁSICOS ---
@@ -82,19 +87,31 @@ class Command(BaseCommand):
         contador_cotizaciones = SolicitudCotizacion.objects.count()
 
         # --- 3. GENERAR 300 CLIENTES CON LÓGICA DE MARKETING ---
-        for i in range(1, 2101):
-            if i % 3 == 0:
+        for i in range(1, 10001):
+            modulo = i % 5
+
+            if modulo == 0:
                 tipo = t_salud
                 origen = 'Google Search'
-                nombre_empresa = f"Hospital/Clínica {fake.company()}" 
-            elif i % 3 == 1:
+                nombre_empresa = f"Hospital/Clínica {fake.company()}"
+            elif modulo == 1:
                 tipo = t_comercio
                 origen = 'Facebook Ads'
                 nombre_empresa = f"Comercializadora {fake.company()}"
-            else:
+            elif modulo == 2:
                 tipo = t_servicios
                 origen = 'LinkedIn'
                 nombre_empresa = f"Agencia {fake.company()}"
+            elif modulo == 3:
+                # --- CANAL: TIKTOK ---
+                tipo = random.choice([t_comercio, t_servicios]) 
+                origen = 'TikTok'
+                nombre_empresa = f"Emprendimiento {fake.company()}"
+            else:
+                # --- CANAL: INSTAGRAM ---
+                tipo = random.choice([t_salud, t_comercio]) 
+                origen = 'Instagram'
+                nombre_empresa = f"Tienda/Consultorio {fake.company()}"
 
             fecha_registro_cliente = fecha_inicio + timedelta(days=random.randint(1, 360))
 
